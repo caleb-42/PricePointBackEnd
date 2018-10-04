@@ -163,7 +163,7 @@ function getdata(a) {
             }
         }
         if (datainfo == "Sales") {
-            $("#salessearch").val() == "" || $("#salessearch").val() == " " ? dbOperations("customerinvoice", "select_operation", ["customerinvoice", ["date", "date"], [startdate, enddate], ["=^>=^<="]]) : dbOperations("customerinvoice", "select_operation", ["customerinvoice", ["customer","date", "date"], [$("#salessearch").val(), startdate, enddate], ["=^>=^<="]]);
+            $("#salessearch").val() == "" || $("#salessearch").val() == " " ? dbOperations("customerinvoice", "select_operation", ["customerinvoice", ["date", "date"], [startdate, enddate], [">=^<="]]) : dbOperations("customerinvoice", "select_operation", ["customerinvoice", ["customer","date", "date"], [$("#salessearch").val(), startdate, enddate], ["=^>=^<="]]);
             
             $(a).text() != "GET" ? $(".moneyinfo.opac").toggleClass("opac") : null;
             /* $(".moneyrep.chght").toggleClass("chght");
@@ -393,6 +393,7 @@ function dbOperations(str, act, arg, args, extargs) {
                 $("#totpaid").text(totmoney);
                 $("#totcost").text(tot);
                 $("#totoutbal").text($(lastoutbal).html());
+                $("#salessearch").val() != "" && data ? $(".moneyinfo.outbal").css("opacity", "1") : $(".moneyinfo.outbal").css("opacity", "0");
                 /*dbOperations("cust", "select_customers", []);*/
                 break;
 
@@ -402,7 +403,7 @@ function dbOperations(str, act, arg, args, extargs) {
                 options = {
                     valueNames: ['entry_date', 'productname', 'stockbought', 'stocksold', 'stockremain', 'entries', 'expirydate'],
                     // Since there are no elements in the list, this will be used as template.
-                    item: '<li class = "pro-item" onclick = "viewStock($(this));"><div><div style = "width:10%; text-align:left !important;" class="listrow entry_date"></div><div style =  "width:30%;" class="listrow productname"></div><div style = "width:10%;" class="listrow stockbought"></div><div style = "width:10%;" class="listrow stocksold"></div><div style = "width:10%;" class="listrow stockremain"></div><div style = "width:10%;" class="listrow entries"></div><div style = "width:20%;" class="listrow expirydate"></div></div><div style = "clear:both"></div></li>'
+                    item: '<li class = "pro-item" onclick = "viewStock($(this));"><div><div style = "width:10%; text-align:left !important;" class="listrow entry_date"></div><div style =  "width:20%;" class="listrow productname"></div><div style = "width:15%;" class="listrow stockbought"></div><div style = "width:10%;" class="listrow stocksold"></div><div style = "width:15%;" class="listrow stockremain"></div><div style = "width:10%;" class="listrow entries"></div><div style = "width:20%;" class="listrow expirydate"></div></div><div style = "clear:both"></div></li>'
                 };
                 values = JSON.parse(data);
 

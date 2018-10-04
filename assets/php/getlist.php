@@ -28,6 +28,7 @@ function select_operation($arg){
         $val = $args[1];
         //print_r($args);
         $users = Db_object::select_object($tb,$col,$val,$sign);
+        //print_r($users[3]);
     }
     !empty($users[3]) ? print json_encode($users[3]) : null;
 }
