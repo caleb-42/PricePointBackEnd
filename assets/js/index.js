@@ -59,9 +59,27 @@ $(document).ready(function () {
 
     $(document).ready(function () {
         $('.sdate').datepicker({
-            dateFormat: "yy-mm-dd"
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true
         });
     });
+    $(document).ready(function () {
+        $('.exp').datepicker({
+            dateFormat: "yy-mm-dd",
+            minDate: +1 ,
+            changeMonth: true,
+            changeYear: true
+        });
+    });
+
+    $('.sdate').keyup(function (evt) {
+        $(this).val('');
+    });
+    $('.exp').keyup(function () {
+        $(this).val('');
+    });
+
 
     //used switch the sidebarlinks active and inactive
     $("#navmenu a").click(function (e) {
@@ -566,7 +584,7 @@ function dbOperations(str, act, arg, args, extargs) {
                 //console.log(data);
                 if (data.substring(0, 6) == "values") {
    data.substring(7, 11) == "will" ?      $('.outputmod').css("color", "#DD2A2A") :           $('.outputmod').css("color", "#25a249");
-                    $('.outputmod').text(data).fadeTo('slow', 1).delay(2000)
+                    $('.outputmod').text('values have been inserted').fadeTo('slow', 1).delay(2000)
                         .fadeTo('slow', 0, function () {
                             $(".btnmod").css("visibility", "visible");
                             $('.outputmod').css("display", "none");

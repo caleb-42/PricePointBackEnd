@@ -518,7 +518,7 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                                     <label class="text-primary inputtext w-100 mt-3">Stock Quantity</label>
                                     <input type="Number" name="stockno" class="form-control text-center textadjust">
                                     <label class="text-primary inputtext w-100 mt-3">Expiry Date</label>
-                                    <input type="text" name="stockexpiry_date" class="form-control inputadjust textadjust sdate">
+                                    <input type="text" name="stockexpiry_date" class="form-control inputadjust textadjust exp ">
                                 </div>
                             </div>
                         </form>
