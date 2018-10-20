@@ -1,5 +1,5 @@
 <?php
-$arr = $_POST;
+$arr = $_GET;
 //print_r($arr);
 $newarr = array();
 
