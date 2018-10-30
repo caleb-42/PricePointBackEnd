@@ -917,6 +917,10 @@ function addcustomer(a) {
 
 //used to add user accounts to the db
 function addStock(a, b) {
+    if($('.expstkdate').val() == ''){
+        alert('fill expiry date');
+        return;
+    }
     data = $("#addStock_form").serialize();
     data += "&product=" + String(a) + "&byadmin=" + String(b) + "&class=Stock";
     data = data.replace(/[&]/g, "^");

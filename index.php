@@ -518,7 +518,7 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                                     <label class="text-primary inputtext w-100 mt-3">Stock Quantity</label>
                                     <input type="Number" name="stockno" class="form-control text-center textadjust">
                                     <label class="text-primary inputtext w-100 mt-3">Expiry Date</label>
-                                    <input type="text" name="stockexpiry_date" class="form-control inputadjust textadjust exp ">
+                                    <input type="text" name="stockexpiry_date" class="form-control inputadjust textadjust expstkdate exp ">
                                 </div>
                             </div>
                         </form>
@@ -592,7 +592,7 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title ml-3">Create New Product</h5>
-                        <button type="button" class="close" id="closeInvoice" data-dismiss="modal" onclick="  ">�</button>
+                        <button type="button" class="close" id="closeInvoice" data-dismiss="modal" onclick="  ">x</button>
                     </div>
                     <div class="modal-body nopadding">
 
