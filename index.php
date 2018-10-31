@@ -318,9 +318,12 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                                                 <h3 class ="customername tabpaneTitle"></h3>
                                                 <div class="crudhd row my-3 d-flex flex-column">
                                                     <input class="form-control w-100 mb-2 text-center" onkeyup="tablefilter($(this), 'customertable');" placeholder="Search" id = "custsearch"/>
-                                                    <button class="btn btn-secondary btn-sm btn-pill mb-1 deactivate"  data-toggle = "modal" data-target = "#updateCustomerInventory" onclick="updateCustomerInventory('load');" style="display:none;">Update Inventory</button>
-                                                    <button class="btn btn-secondary btn-sm btn-pill mb-1"  data-toggle = "modal" data-target = "#debtpayment" onclick="debtpayment('load');">Debt payment</button>
-                                                    <button class="btn btn-secondary btn-sm btn-pill mb-1"  data-toggle = "modal" onclick="deletedebtpayment();">Delete Debt payment</button>
+                                                    <button class="btn btn-secondary btn-sm btn-pill mb-1 deactivate"  data-toggle = "modal" data-target = "#updateCustomerInventory" onclick="updateCustomerInventory('load');" style = 'display:none;'>Update Inventory</button>
+                                                    
+                                                    <div class = 'w-100 mt-1'>
+                                                    <button class="float-left btn btn-secondary btn-sm btn-pill mb-1" style = 'width:39%;' data-toggle = "modal" data-target = "#debtpayment" onclick="debtpayment('load');">Debt payment</button>
+                                                    <button class="float-right btn btn-secondary btn-sm btn-pill mb-1" style = 'width:59%;' data-toggle = "modal" onclick="deletedebtpayment();">Delete Debt payment</button>
+                                                    </div>
                                                 </div>
 
                                                 <thead class="mt-5">
