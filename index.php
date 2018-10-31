@@ -318,12 +318,9 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                                                 <h3 class ="customername tabpaneTitle"></h3>
                                                 <div class="crudhd row my-3 d-flex flex-column">
                                                     <input class="form-control w-100 mb-2 text-center" onkeyup="tablefilter($(this), 'customertable');" placeholder="Search" id = "custsearch"/>
-                                                    <button class="btn btn-secondary btn-sm btn-pill mb-1 deactivate"  data-toggle = "modal" data-target = "#updateCustomerInventory" onclick="updateCustomerInventory('load');" style = 'display:none;'>Update Inventory</button>
                                                     
-                                                    <div class = 'w-100 mt-1'>
-                                                    <button class="float-left btn btn-secondary btn-sm btn-pill mb-1" style = 'width:39%;' data-toggle = "modal" data-target = "#debtpayment" onclick="debtpayment('load');">Debt payment</button>
-                                                    <button class="float-right btn btn-secondary btn-sm btn-pill mb-1" style = 'width:59%;' data-toggle = "modal" onclick="deletedebtpayment();">Delete Debt payment</button>
-                                                    </div>
+                                                    <button class="float-left btn btn-secondary btn-sm btn-pill mb-1"  data-toggle = "modal" data-target = "#debtpayment" onclick="debtpayment('load');">Debt payment</button>
+                                                    <button class="float-right btn btn-secondary btn-sm btn-pill mb-1"  data-toggle = "modal" onclick="deletedebtpayment();">Delete Debt payment</button>
                                                 </div>
 
                                                 <thead class="mt-5">
@@ -356,8 +353,10 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                                                     <div class = "row justify-content-between mb-1"><span>Sales Ref</span> <span class="salesreff ">sd</span></div>
                                                     <div class = "row justify-content-between mb-1"><span>Invoice No</span> <span class="invnum">sd</span></div>
                                                     <div class = "row justify-content-between mb-1"><span>Date</span> <span class="datesale">sd</span></div>
+                                                    
                                                 </div>
 
+                                                <button class="btn btn-secondary btn-sm btn-pill mb-3 w-100"  data-toggle = "modal" data-target = "#updateCustomerInventory" onclick="updateCustomerInventory('load');">Update Inventory</button>
 
                                                 <thead class="mt-5">
                                                     <tr>
@@ -368,7 +367,7 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                                                     </tr>
                                                 </thead>
                                             </div>
-                                            <tbody id="inventorylistdetails" class="tabtable">
+                                            <tbody id="inventorylistdetails" class="tabtable cust_invdetails_tb">
 
                                             </tbody>
                                         </table>
@@ -913,17 +912,21 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                     </div>
                     <div class="modal-body nopadding">
 
-                        <form role="form" method="get" id="updCustomerInventory_form" class="">
+                        <form role="form" method="get" id="updinventory_form" class="">
                             <div class="ml-5 my-5 float-left" style="width:40%">
                                 <div class="padd">
-                                    <label class="text-primary inputtext w-100 mt-3">Total Paid</label>
-                                    <input type="number" name="paidamt_read" class="form-control inputadjust textadjust" readonly>
+                                    <label class="text-primary inputtext w-100">Product</label>
+                                    <input type="text" name="proname" class="form-control inputadjust textadjust" readonly>
+                                    <label class="text-primary inputtext w-100 mt-4">Quantity</label>
+                                    <input type="number" name="qty" class="form-control inputadjust textadjust" readonly>
                                 </div>
                             </div>
                             <div class="mr-5 my-5  float-right" style="width:40%">
                                 <div class="padd">
-                                    <label class="text-primary inputtext w-100 mt-3">Money paid now</label>
-                                    <input type="number" name="paidamt" class="form-control inputadjust textadjust">
+                                    <label class="text-primary inputtext w-100">Product</label>
+                                    <input type="text" name="product_name" class="form-control inputadjust textadjust">
+                                    <label class="text-primary inputtext w-100 mt-4">Quantity</label>
+                                    <input type="number" name="quantity" class="form-control inputadjust textadjust">
                                 </div>
                             </div>
                         </form>

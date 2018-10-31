@@ -532,11 +532,12 @@ function dbOperations(str, act, arg, args, extargs) {
                 //console.log(data);
                 $('#inventorylistdetails').empty();
                 //
+                inventorydisp = 'inventorydisp';
                 if (data != "") {
                     json = JSON.parse(data);
                     var stri = "";
                     for (var a = 0; a < json.length; a++) {
-                        stri += '<tr id="tablerow' + a + '" class = "trow" ><td style="text-align: center;" class="tdel salesproduct">' + json[a].product + '</td><td style="text-align: center;" class="tdel salesqty">' + json[a].quantity + '</td><td style="text-align: center;" class="tdel salestotamt">' + json[a].totalprice + '</td>' + '</td><td style="text-align: center;" class="tdel pricetype">' + json[a].pricetype + '</td>';
+                        stri += '<tr id="tablerow' + a + '" class = "trow" onclick = "togglerow($(this),' + inventorydisp + ');"><td style="text-align: center;" class="tdel salesproduct">' + json[a].product + '</td><td style="text-align: center;" class="tdel salesqty">' + json[a].quantity + '</td><td style="text-align: center;" class="tdel salestotamt">' + json[a].totalprice + '</td>' + '</td><td style="text-align: center;" class="tdel pricetype">' + json[a].pricetype + '</td>';
                     }
 
                     $('#inventorylistdetails').append(stri);
@@ -1072,8 +1073,9 @@ function debtpayment(str) {
 function updateCustomerInventory(str) {
     switch (str) {
         case "load":
-            if ($(".cust_invtb tr.actparent")[0]) {
-                $("#updateCustomerInventory [name=paidamt_read]").val(String($("tr.actparent .invoicepaid").html()));
+            if ($(".cust_invdetails_tb tr.actparent")[0]) {
+                $("#updateCustomerInventory [name=proname]").val(String($("tr.actparent .salesproduct").html()));
+                $("#updateCustomerInventory [name=qty]").val(String($("tr.actparent .salesqty").html()));
             }
             break;
         case "store":
