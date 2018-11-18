@@ -39,7 +39,7 @@ $(document).ready(function () {
             $(".menunames").toggleClass("collapsein");
         } else {
             var collap = $('#sidebar').css('height');
-            (parseInt(collap) > 70) ? collapseSidebar(): openSidebar();
+            (parseInt(collap) > 70) ? collapseSidebar() : openSidebar();
         }
 
         $('#dataToggler').toggleClass("is-active");
@@ -67,7 +67,7 @@ $(document).ready(function () {
     $(document).ready(function () {
         $('.exp').datepicker({
             dateFormat: "yy-mm-dd",
-            minDate: +1 ,
+            minDate: +1,
             changeMonth: true,
             changeYear: true
         });
@@ -139,7 +139,7 @@ function openSidebar() {
 
 function organiseSidebar() {
     var windowWidth = $(window).width();
-    (windowWidth > 578) ? resizesideleft(): resizesidetop();
+    (windowWidth > 578) ? resizesideleft() : resizesidetop();
     console.log(windowWidth);
 }
 
@@ -181,13 +181,13 @@ function getdata(a) {
             }
         }
         if (datainfo == "Sales") {
-            $("#salessearch").val() == "" || $("#salessearch").val() == " " ? dbOperations("customerinvoice", "select_operation", ["customerinvoice", ["date", "date"], [startdate, enddate], [">=^<="]]) : dbOperations("customerinvoice", "select_operation", ["customerinvoice", ["customer","date", "date"], [$("#salessearch").val(), startdate, enddate], ["=^>=^<="]]);
-            
+            $("#salessearch").val() == "" || $("#salessearch").val() == " " ? dbOperations("customerinvoice", "select_operation", ["customerinvoice", ["date", "date"], [startdate, enddate], [">=^<="]]) : dbOperations("customerinvoice", "select_operation", ["customerinvoice", ["customer", "date", "date"], [$("#salessearch").val(), startdate, enddate], ["=^>=^<="]]);
+
             $(a).text() != "GET" ? $(".moneyinfo.opac").toggleClass("opac") : null;
             /* $(".moneyrep.chght").toggleClass("chght");
             $("#sale .list.chgpadd").toggleClass("chgpadd");*/
         } else if (datainfo == "Stock") {
-            $("#salessearch").val() == "" || $("#salessearch").val() == " " ?  dbOperations("stock", "select_operation", ["stock", ["entry_date", "entry_date"], [startdate, enddate], [">=^<="]]) : dbOperations("stock", "select_operation", ["stock", ["productname","entry_date", "entry_date"], [$("#salessearch").val(), startdate, enddate], ["=^>=^<="]]);
+            $("#salessearch").val() == "" || $("#salessearch").val() == " " ? dbOperations("stock", "select_operation", ["stock", ["entry_date", "entry_date"], [startdate, enddate], [">=^<="]]) : dbOperations("stock", "select_operation", ["stock", ["productname", "entry_date", "entry_date"], [$("#salessearch").val(), startdate, enddate], ["=^>=^<="]]);
             $(a).text() != "GET" ? $(".moneyinfo").toggleClass("opac") : null;
             /*$(".moneyrep").toggleClass("chght");
             $("#sale .list").toggleClass("chgpadd");*/
@@ -364,7 +364,7 @@ function dbOperations(str, act, arg, args, extargs) {
 
                 mylist = new List('sales-list', options, values);
 
-                
+
                 //mylist.search(); 
 
                 var lent = $("#sales-list .list li").length;
@@ -537,7 +537,7 @@ function dbOperations(str, act, arg, args, extargs) {
                     json = JSON.parse(data);
                     var stri = "";
                     for (var a = 0; a < json.length; a++) {
-                        stri += '<tr id="tablerow' + a + '" class = "trow" onclick = "togglerow($(this),' + inventorydisp + ');"><td style="text-align: center;" class="tdel salesproduct">' + json[a].product + '</td><td style="text-align: center;" class="tdel salesqty">' + json[a].quantity + '</td><td style="text-align: center;" class="tdel salestotamt">' + json[a].totalprice + '</td>' + '</td><td style="text-align: center;" class="tdel pricetype">' + json[a].pricetype + '</td>';
+                        stri += '<tr id="tablerow' + a + '" class = "trow" onclick = "togglerow($(this),' + inventorydisp + ');"><td style="text-align: center; display:none;" class="tdel id">' + json[a].id + '</td><td style="text-align: center;" class="tdel salesproduct">' + json[a].product + '</td><td style="text-align: center;" class="tdel salesqty">' + json[a].quantity + '</td><td style="text-align: center;" class="tdel salestotamt">' + json[a].totalprice + '</td>' + '</td><td style="text-align: center;" class="tdel pricetype">' + json[a].pricetype + '</td>';
                     }
 
                     $('#inventorylistdetails').append(stri);
@@ -584,12 +584,13 @@ function dbOperations(str, act, arg, args, extargs) {
                 $(".createloadgif").css("visibility", "hidden");
                 //console.log(data);
                 if (data.substring(0, 6) == "values") {
-   data.substring(7, 11) == "will" ?      $('.outputmod').css("color", "#DD2A2A") :           $('.outputmod').css("color", "#25a249");
+                    data.substring(7, 11) == "will" ? $('.outputmod').css("color", "#DD2A2A") : $('.outputmod').css("color", "#25a249");
                     $('.outputmod').text('values have been inserted').fadeTo('slow', 1).delay(2000)
                         .fadeTo('slow', 0, function () {
                             $(".btnmod").css("visibility", "visible");
                             $('.outputmod').css("display", "none");
- act == "update_operation" ? $(".modal .close").trigger("click"):null;                       });
+                            act == "update_operation" ? $(".modal .close").trigger("click") : null;
+                        });
                     if (extargs.length > 0) {
                         dbOperations("products", "select_operation", "products", args, extargs);
                         dbOperations("customers", "select_operation", "customers", args, extargs);
@@ -613,7 +614,8 @@ function dbOperations(str, act, arg, args, extargs) {
                         .fadeTo('slow', 0, function () {
                             $(".btnmod").css("visibility", "visible");
                             $('.outputmod').css("display", "none");
-        act == "update_operation" ? $(".modal .close").trigger("click"):null;                });
+                            act == "update_operation" ? $(".modal .close").trigger("click") : null;
+                        });
                 }
                 break;
 
@@ -621,16 +623,16 @@ function dbOperations(str, act, arg, args, extargs) {
     });
 }
 
-function refreshpage(){
+function refreshpage() {
     $('#navmenu .active').trigger("click");
 }
 
-function viewSales(obj){
+function viewSales(obj) {
     str = obj.find(".customer").html();
     $("#salessearch").val(str);
     mylist.search(str);
 }
-function viewStock(obj){
+function viewStock(obj) {
     str = obj.find(".productname").html();
     $("#salessearch").val(str);
     mylist.search(str);
@@ -884,9 +886,9 @@ function addProduct(a) {
     data = $("#product_form").serialize();
     data += "&class=Product";
     data = data.replace(/[&]/g, "^");
-  $(".btnmod").css("visibility", "hidden");  dbOperations("", "add_operation", data, ["product_name", "stock"]);
+    $(".btnmod").css("visibility", "hidden"); dbOperations("", "add_operation", data, ["product_name", "stock"]);
     $("#product_form .textadjust").val("");
-    
+
     $(".createloadgif").css("visibility", "visible");
     $('.outputmod').css("display", "inline");
 }
@@ -902,14 +904,14 @@ function addcustomer(a) {
         $("#customer_form [name=customer_email]").val("nil");
         $("#customer_form [name=customer_phone]").val("0");
         $("#customer_form [name=address]").val("nil"); */
-   $(".btnmod").css("visibility", "hidden");
-     dbOperations("", "add_operation", data, ["customer_name", "customer"]);
-                $(".createloadgif").css("visibility", "visible");
+        $(".btnmod").css("visibility", "hidden");
+        dbOperations("", "add_operation", data, ["customer_name", "customer"]);
+        $(".createloadgif").css("visibility", "visible");
         $('.outputmod').css("display", "inline");
     } else {
-    $(".btnmod").css("visibility", "hidden");
-     dbOperations("", "add_operation", data, ["customer_name", "customer"]);
-               $(".createloadgif").css("visibility", "visible");
+        $(".btnmod").css("visibility", "hidden");
+        dbOperations("", "add_operation", data, ["customer_name", "customer"]);
+        $(".createloadgif").css("visibility", "visible");
         $('.outputmod').css("display", "inline");
     }
 
@@ -918,7 +920,7 @@ function addcustomer(a) {
 
 //used to add user accounts to the db
 function addStock(a, b) {
-    if($('.expstkdate').val() == ''){
+    if ($('.expstkdate').val() == '') {
         alert('fill expiry date');
         return;
     }
@@ -929,9 +931,9 @@ function addStock(a, b) {
     $("#product-list").css("opacity", "0");
     console.log(prodnam);
     $("#addStock_form .textadjust").val("");
-  $(".btnmod").css("visibility", "hidden");
-   dbOperations("", "add_operation", data, ["product_name", "stock"], ["#product-list", ".pro-item .product_name", prodnam]);
-       $(".createloadgif").css("visibility", "visible");
+    $(".btnmod").css("visibility", "hidden");
+    dbOperations("", "add_operation", data, ["product_name", "stock"], ["#product-list", ".pro-item .product_name", prodnam]);
+    $(".createloadgif").css("visibility", "visible");
     $('.outputmod').css("display", "inline");
 }
 
@@ -953,9 +955,9 @@ function updateProduct(str) {
             data += "&wherecol=" + String($("li.actparent .product_name").html()) + "&class=Product";
             console.log(data);
             data = data.replace(/[&]/g, "^");
-     $(".btnmod").css("visibility", "hidden");
-        dbOperations("", "update_operation", data, ["product_name", "stock"]);
-                       $(".createloadgif").css("visibility", "visible");
+            $(".btnmod").css("visibility", "hidden");
+            dbOperations("", "update_operation", data, ["product_name", "stock"]);
+            $(".createloadgif").css("visibility", "visible");
             $('.outputmod').css("display", "inline");
             break;
     }
@@ -979,9 +981,9 @@ function updatecustomer(str) {
             data += "&wherecol=" + String($("li.actparent .customer_name").html()) + "&class=Customer";
             console.log(data);
             data = data.replace(/[&]/g, "^");
-        $(".btnmod").css("visibility", "hidden");
-      dbOperations("", "update_operation", data, ["customer_name", "inventory"]);
-                      $(".createloadgif").css("visibility", "visible");
+            $(".btnmod").css("visibility", "hidden");
+            dbOperations("", "update_operation", data, ["customer_name", "inventory"]);
+            $(".createloadgif").css("visibility", "visible");
             $('.outputmod').css("display", "inline");
             break;
     }
@@ -1009,9 +1011,9 @@ function updateStock(str) {
             data = data.replace(/[&]/g, "^");
             prodnam = $(".product_name.act").html();
             $("#product-list").css("opacity", "0");
-     $(".btnmod").css("visibility", "hidden");
-        dbOperations("", "update_operation", data, ["product_name", "stock"], ["#product-list", ".pro-item .product_name", prodnam]);
-                       $(".createloadgif").css("visibility", "visible");
+            $(".btnmod").css("visibility", "hidden");
+            dbOperations("", "update_operation", data, ["product_name", "stock"], ["#product-list", ".pro-item .product_name", prodnam]);
+            $(".createloadgif").css("visibility", "visible");
             $('.outputmod').css("display", "inline");
             break;
     }
@@ -1039,9 +1041,9 @@ function updateStock(str) {
             data = data.replace(/[&]/g, "^");
             prodnam = $(".product_name.act").html();
             $("#product-list").css("opacity", "0");
-       $(".btnmod").css("visibility", "hidden");
-     dbOperations("", "update_operation", data, ["product_name", "stock"], ["#product-list", ".pro-item .product_name", prodnam]);
-                        $(".createloadgif").css("visibility", "visible");
+            $(".btnmod").css("visibility", "hidden");
+            dbOperations("", "update_operation", data, ["product_name", "stock"], ["#product-list", ".pro-item .product_name", prodnam]);
+            $(".createloadgif").css("visibility", "visible");
             $('.outputmod').css("display", "inline");
             break;
     }
@@ -1061,8 +1063,8 @@ function debtpayment(str) {
             data = data.replace(/[&]/g, "^");
             custnam = $(".customer_name.act").html();
             $("#inventorylist").css("opacity", "0");
-      $(".btnmod").css("visibility", "hidden");       dbOperations("", "update_operation", data, ["customer_name", "inventory"], ["#inventorylist", ".pro-item .customer_name", custnam]);
-           
+            $(".btnmod").css("visibility", "hidden"); dbOperations("", "update_operation", data, ["customer_name", "inventory"], ["#inventorylist", ".pro-item .customer_name", custnam]);
+
             $(".createloadgif").css("visibility", "visible");
             $('.outputmod').css("display", "inline");
             break;
@@ -1079,12 +1081,13 @@ function updateCustomerInventory(str) {
             }
             break;
         case "store":
-            data = $("#updCustomerInventory_form :input").filter(function (index, element) {
+            data = $("#updateCustomerInventory :input").filter(function (index, element) {
                 return $(element).attr('readonly') == undefined && $(element).val() != '';
             }).serialize();
-            console.log($("tr.actparent .sales_invid").html());
-            data += "&cust=" + String($("li.actparent .customer_name").html());
-            data += "&wherecol=" + String($("tr.actparent .sales_invid").html()) + "&class=Inventory";
+            console.log(data);
+            console.log($("tr.actparent .id").html());
+            /* data += "&id=" + String($("tr.actparent .id").html()); */
+            data += "&wherecol=" + String($("tr.actparent .id").html()) + "&class=Sales";
             console.log(data);
             data = data.replace(/[&]/g, "^");
             custnam = $(".customer_name.act").html();

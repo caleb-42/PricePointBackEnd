@@ -810,8 +810,8 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                         <form role="form" method="get" id="updproduct_form" class="">
                             <div class="ml-5 my-5 float-left" style="width:40%">
                                 <div class="padd">
-                                    <label class="text-primary inputtext w-100">Name</label>
-                                    <input type="text" name="proname" class="form-control inputadjust textadjust" readonly>
+                                    <!-- <label class="text-primary inputtext w-100">Name</label>
+                                    <input type="text" name="proname" class="form-control inputadjust textadjust" readonly> -->
                                     <label class="text-primary inputtext w-100 mt-3">Description</label>
                                     <textarea rows=2 type="text" name="proddescription" class="form-control text-center textadjust" readonly></textarea>
                                 </div>
@@ -824,8 +824,8 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                             </div>
                             <div class="mr-5 my-5  float-right" style="width:40%">
                                 <div class="padd">
-                                    <label class="text-primary inputtext w-100">Name</label>
-                                    <input type="text" name="product_name" class="form-control inputadjust textadjust">
+                                    <!-- <label class="text-primary inputtext w-100">Name</label>
+                                    <input type="text" name="product_name" class="form-control inputadjust textadjust"> -->
                                     <label class="text-primary inputtext w-100 mt-3">Description</label>
                                     <textarea rows=2 type="text" name="product_description" class="textadjust form-control text-center"></textarea>
                                 </div>
@@ -908,11 +908,11 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title ml-3">Update Inventory</h5>
-                        <button type="button" class="close" id="closeInvoice" data-dismiss="modal" onclick="  ">�</button>
+                        <button type="button" class="close" id="closeInvoice" data-dismiss="modal" onclick="  ">x</button>
                     </div>
                     <div class="modal-body nopadding">
 
-                        <form role="form" method="get" id="updinventory_form" class="">
+                        <form role="form" method="get" id="updateCustomerInventory_form" class="">
                             <div class="ml-5 my-5 float-left" style="width:40%">
                                 <div class="padd">
                                     <label class="text-primary inputtext w-100">Product</label>
