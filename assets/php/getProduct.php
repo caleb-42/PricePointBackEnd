@@ -17,7 +17,7 @@ if(is_ajax_request()){
         // GET
         $readall = array();
         $readall = DbHandler::select_cmd(['table' => 'products']);
-        echo json_encode($readall);
+        echo json_encode($readall[3]);
     }
     
 }
@@ -58,15 +58,16 @@ function getPro($data){
             array_push($col, $data[$num]);
             array_push($val, $arr[$data[$num]]);
         }
+        $valu ="%". $val[0] . "%";
         $read = DbHandler::select_cmd([
             'table' => 'products',
-            'col' => $col,
-            'val' => $val,
-            'type' => 'like'
+            'qcol' => $col,
+            'qval' => [$valu],
+            'cond' => ['like']
         ]);
 
     }
-    echo json_encode($read);
+    echo json_encode($read[3]);
     /*if($read){
         if($read == 1){
             $assoc = array('0' => 'updat', '1' => 'Created');

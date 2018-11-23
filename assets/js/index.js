@@ -779,6 +779,13 @@ function deleteStockentry() {
     }
 }
 
+function deleteInventoryentry() {
+    console.log($("tr.actparent .id").html());
+    custnam = $(".customer_name.act").html();
+    data = "id=" + String($("tr.actparent .id").html()) + "^class=Sales";
+    dbOperations("del", "delete_operation", data, ["customer_name", "inventory"], ["#inventorylist", ".pro-item .customer_name", custnam]);
+}
+
 //used to view use sessions
 function viewcustomer(a) {
     $(".inventorydisp .unactivate").toggleClass("deactivate unactivate");
@@ -933,6 +940,35 @@ function addStock(a, b) {
     $("#addStock_form .textadjust").val("");
     $(".btnmod").css("visibility", "hidden");
     dbOperations("", "add_operation", data, ["product_name", "stock"], ["#product-list", ".pro-item .product_name", prodnam]);
+    $(".createloadgif").css("visibility", "visible");
+    $('.outputmod').css("display", "inline");
+}
+
+function addToInvoicePrimer() {
+    $.get("./assets/php/getProduct.php", function (response) {
+        //var json = "";
+        if (response != "") {
+            json = JSON.parse(response);
+            str = "<option value='' disabled selected hidden>select Drug</option>";
+            for (var u = 0; u < json.length; u++) {
+                str += '<option " class = "drug text-center" qty = '+ json[u].stock +'  rprice = '+ json[u].product_retailprice +'  wprice = '+ json[u].product_wholesaleprice +' value="' + json[u].product_name + '">' + json[u].product_name + '</option>';
+            }
+            $(".productlist").html(str);
+        }
+    });
+}
+function selproduct(sel){
+    $('.qtyavailable').val($('option:selected', sel).attr('qty'));
+    $('.retailp').val($('option:selected', sel).attr('rprice'));
+    $('.wholesalep').val($('option:selected', sel).attr('wprice'));
+}
+function addProductToInvoice($this) {
+    data = $("#addproduct_form").serialize();
+    data += "&invoiceno=" + $('.invnum').html() + "&class=Sales";
+    data = data.replace(/[&]/g, "^");
+    custnam = $(".customer_name.act").html();
+    $("#inventorylist").css("opacity", "0");
+    $(".btnmod").css("visibility", "hidden"); dbOperations("", "add_operation", data, ["customer_name", "inventory"], ["#inventorylist", ".pro-item .customer_name", custnam]);
     $(".createloadgif").css("visibility", "visible");
     $('.outputmod').css("display", "inline");
 }

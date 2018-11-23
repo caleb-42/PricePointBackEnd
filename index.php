@@ -355,9 +355,10 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                                                     <div class = "row justify-content-between mb-1"><span>Date</span> <span class="datesale">sd</span></div>
                                                     
                                                 </div>
-
-                                                <button class="btn btn-secondary btn-sm btn-pill mb-3 w-100"  data-toggle = "modal" data-target = "#updateCustomerInventory" onclick="updateCustomerInventory('load');">Update Inventory</button>
-
+                                                <div class = "row justify-content-around">
+                                                <button class="btn btn-secondary btn-sm btn-pill mb-3 text-center" style = "width:45%;"  data-toggle = "modal" data-target = "#addCustomerInventory" onclick="addToInvoicePrimer();">Add Product</button>
+                                                <button class="btn btn-secondary btn-sm btn-pill mb-3 text-center" style = "width:45%;" onclick="deleteInventoryentry();">Delete Product</button>
+                                                </div>
                                                 <thead class="mt-5">
                                                     <tr>
                                                         <th style="text-align: center;">PRODUCTS</th>
@@ -702,9 +703,7 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                                     <label class="text-primary inputtext w-100">Entry Date</label>
                                     <input type="text" name="entrdate" class="form-control inputadjust textadjust" readonly>
                                     <label class="text-primary inputtext w-100 mt-3">Stock Quantity</label>
-                                    <input type="Number" name="stocno" class="form-control text-center textadjust" readonly><!--
-<label class="text-primary inputtext w-100 mt-3">Expiry date</label>
-<input type="text" name="expd" class="form-control text-center" readonly>-->
+                                    <input type="Number" name="stocno" class="form-control text-center textadjust" readonly>
                                 </div>
                             </div>
                             <div class="mr-5 my-5  float-right" style="width:40%">
@@ -712,9 +711,7 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                                     <label class="text-primary inputtext w-100">Entry Date</label>
                                     <input type="text" name="entry_date" class="form-control inputadjust textadjust sdate">
                                     <label class="text-primary inputtext w-100 mt-3">Stock Quantity</label>
-                                    <input type="Number" name="stockno" class="form-control text-center textadjust"><!--
-<label class="text-primary inputtext w-100 mt-3">Expiry date</label>
-<input type="text" name="stockexpiry_date" class="form-control text-center sdate">-->
+                                    <input type="Number" name="stockno" class="form-control text-center textadjust">
                                 </div>
                             </div>
                         </form>
@@ -902,7 +899,7 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
             </div>
         </div>
 
-        <div class="modal fade" id="updateCustomerInventory" class = "update_operation" role="dialog" >
+        <!-- <div class="modal fade" id="updateCustomerInventory" class = "update_operation" role="dialog" >
             <div class="modal-dialog modal-lg">
 
                 <div class="modal-content">
@@ -948,7 +945,74 @@ require_once "assets/php/myphp-backup-master/myphp-backup.php";?>
                 </div>
             </div>
         </div>
+ -->
 
+        <div class="modal fade" id="addCustomerInventory" role="dialog">
+            <div class="modal-dialog modal-lg">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title ml-3">Add Product</h5>
+                        <button type="button" class="close" id="closeInvoice" data-dismiss="modal" onclick="  ">�</button>
+                    </div>
+                    <div class="modal-body nopadding">
+
+                        <form role="form" method="get" id="addproduct_form" class="">
+                            <div class="mx-5 px-4 my-2">
+                                <div class="padd mb-2">
+                                    <label class="text-primary inputtext w-100 mt-3">Product</label>
+                                    <select  qty = "" onchange = "selproduct($(this));" class="productlist visible form-control" name="product_name"></select>
+                                </div>
+                                <div class="padd row">
+                                    <span class = "col-4">
+                                        <label class="text-primary inputtext w-100 mt-3">Available</label>
+                                        <input type="number" name="stock" class="qtyavailable form-control inputadjust textadjust" readonly>
+                                    </span>
+                                    <span class = "col-4">
+                                        <label class="text-primary inputtext w-100 mt-3">Retail Price</label>
+                                        <input type="number" name="rprice" class="retailp form-control inputadjust textadjust" readonly>
+                                    </span>
+                                    <span class = "col-4">
+                                        <label class="text-primary inputtext w-100 mt-3">WholeSale Price</label>
+                                        <input type="number" name="wprice" class="wholesalep form-control inputadjust textadjust" readonly>
+                                    </span>
+                                </div>
+                                <div class="padd mb-2">
+                                    <label class="text-primary inputtext w-100 mt-3">Price System</label>
+                                    <select  class="pricesystem visible form-control" name="pricesystem">
+                                    <option value='' disabled selected hidden>select Price System</option>
+                                    <option value = "retail">Retail</option>
+                                    <option value = "wholesale">Wholesale</option>
+                                    </select>
+                                </div>
+                                <div class="padd">
+                                    <label class="text-primary inputtext w-100 mt-3">New Quantity</label>
+                                    <input type="number" name="quantity" class="newqty form-control inputadjust textadjust">
+                                </div>
+                                <div class="padd">
+                                    <label class="text-primary inputtext w-100 mt-3">Paid Amount</label>
+                                    <input type="number" name="paidamt" class="paid form-control inputadjust textadjust">
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="modal-footer w-100">
+                            <div class="justify-content-center w-100 d-flex flex-column">
+                                <div class="py-3 align-self-center">
+
+                                    <img class="createloadgif" src="./assets/img/loader.gif" width="90px" height="60px" class="" style="position:absolute !important; visibility:hidden; margin-bottom:20px;margin-left:5px;">
+                                    <button type="button" class="btn btn-success btnmod" onclick="addProductToInvoice();">
+                                        ADD
+                                    </button>
+                                </div>
+                                <p class = "outputmod align-self-center" style="width:50%; font-size:15px;  text-align:center;font-weight: 600; opacity:0;"></p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="modal fade" id="print" role="dialog">
             <div class="modal-dialog modal-lg" style="background:#fff;">
