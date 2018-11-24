@@ -42,7 +42,7 @@ function add_operation($arg){
     //print_r($class_name);
     $dbObj = new $class_name();
     echo $dbObj->insert_object($arr);
-    backup($_GET["sess"]);
+    backdata();
 }
 
 function update_operation($arg){
@@ -54,7 +54,7 @@ function update_operation($arg){
     //print_r($class_name);
     $dbObj = new $class_name();
     echo $dbObj->update_object($arr);
-    backup($_GET["sess"]);
+    backdata();
 }
 
 function delete_operation($arg){
@@ -66,7 +66,14 @@ function delete_operation($arg){
     print_r($class_name);
     $dbObj = new $class_name();
     $dbObj->delete_object($arr);
-    backup($_GET["sess"]);
+    backdata();
+}
+
+function backdata(){
+    date_default_timezone_set('Africa/Lagos');
+    $date = date("Y/m/d h:i:s:a", time());
+    $name = $_GET["sess"] . $date;
+    backup($name);
 }
 
 function is_ajax_request(){

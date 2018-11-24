@@ -83,8 +83,9 @@ class Sales extends Db_object{
         return $entryclosestdate;
     }
 
+    
     function get_stockentry_no($exp, $pro){
-        $users = parent::select_object("stockentry",["stockexpiry_date","product"],[$exp, $pro]);
+        $users = parent::select_object("stockentry",["stockexpiry_date","product", "stocktype"],[$exp, $pro, "new"]);
         $number_of_entries = count($users[3]);
         return $number_of_entries;
     }
@@ -244,87 +245,122 @@ class Sales extends Db_object{
         $newqty = $newqty == 0 ? $frmqty : $newqty;
 
         $stk_result = $this->correct_stock($product, $expdate, $frmqty, $newqty);
-        /*
         
-        $confirm_stockentry_in_db = parent::select_object("stockentry", ["id"],[$wval]);
-        
-        $oldcol = ["entry_date","stockno"];
-        $oldval = [$confirm_stockentry_in_db[3][0]["entry_date"],$confirm_stockentry_in_db[3][0]["stockno"]];
-        
-        $product_name = $confirm_stockentry_in_db[3][0]["product"];
-        
-        $checkcol = ["expirydate","productname"];
-        $checkval = [$exp,$product_name];
-        
-
-        $confirm_stock_in_db = parent::select_object("stock", $checkcol,$checkval);
-        $stkarr = $this->calc_stock_inventory($confirm_stock_in_db, $frmqty, "upd", $newqty);
-        $user = $stkarr;
-        if($stkarr[0] != "failed"){
-        $users = parent::update_object("stockentry", $col, $val, ["id"], [$wval]);
-        
-        $closest_entry_date = $this->find_closest_entry_date($product_name, $exp);
-        
-        $number_of_entries = $this->get_stockentry_no($exp, $product_name);
-        
-            $user = $this->final_updatestock($product_name, $stkarr[0],$stkarr[1], $exp, $closest_entry_date, $number_of_entries);
-
-        $closest_expiry_date = $this->find_closest_expiry_date($product_name);
-
-        $this->sum_product_stock($product_name,$closest_expiry_date);
-            
-        }
-        if($user[1] == "success"){
-            return $user[2];
-        } */
         
     }
     
     function delete_object($arr){
-       print_r($arr);
-        
-    }
-    
-    function delete_stock($arr){
-        $qval = $arr["id"];
-        $product_stocks = parent::select_object("stock",["id"],[$qval]);
-        $product_name = $product_stocks[3][0]["productname"];
-        $expiry_date = $product_stocks[3][0]["expirydate"];
+        print_r($arr);
+        $sales = parent::select_object("sales",["id"],[$arr['id']]);
+        $prod = $sales[3][0]['product'];
+        $qty = intval($sales[3][0]['quantity']);
+        $exp = $sales[3][0]['expirydate'];
 
-        $users = parent::delete_object("stock", ["id"], [$qval]);
+        $totalAmt = intval($sales[3][0]['totalamt']);
+        $totalCost = intval($sales[3][0]['totalprice']);
+        $outbal = intval($sales[3][0]['outbal']);
+        $inv = $sales[3][0]['invoiceno'];
 
-        $closest_expiry_date = $this->find_closest_expiry_date($product_name);
+        $salesno = parent::select_object("sales",["invoiceno"],[$inv]);
 
-        $this->sum_product_stock($product_name,$closest_expiry_date);
-        parent::update_object("stockentry", ["stocktype"], ["old"], ["product","stockexpiry_date"], [$product_name, $expiry_date]); 
-    }
-    
-    function delete_stockentry($arr){
-        $qval = $arr["id"];
-        $product_stockentry = parent::select_object("stockentry",["id"],[$qval]);
-        
-        $stkq = intval($product_stockentry[3][0]["stockno"]);
-        $product_name = $product_stockentry[3][0]["product"];
-        $expiry_date = $product_stockentry[3][0]["stockexpiry_date"];
-
-
-        $stk = parent::select_object("stock", ["expirydate","productname"],[$expiry_date,$product_name]);
-        $stkarr = $this->calc_stock_inventory($stk, $stkq, "minus");
-        if($stkarr[0] != "failed"){
-        $users = parent::delete_object("stockentry", ["id"], [$qval]);
-        
-        $closest_entry_date = $this->find_closest_entry_date($product_name, $expiry_date);
-
-        $number_of_entries = $this->get_stockentry_no($expiry_date, $product_name);
-        
-        
-            $user = $this->final_updatestock($product_name,$stkarr[0],$stkarr[1], $expiry_date, $closest_entry_date, $number_of_entries);
-
-
-            $closest_expiry_date = $this->find_closest_expiry_date($product_name);
-
-            $this->sum_product_stock($product_name,$closest_expiry_date);
+        if(count($salesno[3]) < 2){
+            return "cannot delete last sale";
         }
+
+        $stk_result = $this->delete_stock($prod, $qty, $exp);
+        if($stk_result[0] == "success"){
+            $this->delete_inventory($totalAmt, $totalCost, $outbal, $inv, $arr['id']);
+            
+        }
+        
+        
+    }
+    
+    function delete_stock($prod, $qty, $exp){
+
+        $stock = parent::select_object("stock",["productname","expirydate"],[$prod, $exp]);
+        $stksold = $stock[3] ? intval($stock[3][0]['stocksold']) : 0;
+        $stkbgt = $stock[3] ? intval($stock[3][0]['stockbought']) : 0;
+        $stkrem = $stock[3] ? intval($stock[3][0]['stockremain']) : 0;
+
+        print_r($stock);
+        echo $stksold . " vs " . $qty;
+        
+        if($stksold > $qty){
+            $stksold -= $qty;
+            $stkrem += $qty;
+            parent::update_object("stock", ["stocksold","stockremain"], [$stksold, $stkrem], ["productname","expirydate"], [$prod, $exp]); 
+            $closest_expiry_date = $this->find_closest_expiry_date($prod);
+            $this->sum_product_stock($prod,$closest_expiry_date);
+            return ['success', 'inserted'];
+        }else{
+            $stkarr = parent::select_object("stockentry",["product","stockexpiry_date","stocktype"],[$prod, $exp, "old"]);
+
+            usort($stkarr[3], function($a, $b)
+            {
+                return strcmp($b['entry_date'], $a['entry_date']);
+            });
+
+            print_r($stkarr[3]);
+            foreach($stkarr[3] as $stk){
+                $stkbgt += $stk['stockno'];
+                $stksold += $stk['stockno'];
+                $stk['stocktype'] = 'new';
+                parent::update_object("stockentry", ["stocktype"], ["new"], ["id"], [$stk['id']]); 
+                if($stksold > $qty){
+                    if($stock[3]){
+                        $stksold -= $qty;
+                        $stkrem += $qty;
+                        
+                        parent::update_object("stock", ["stockbought","stocksold","stockremain", "entry_date", "entries"], [$stkbgt, $stksold, $stkrem, $this->find_closest_entry_date($prod, $exp), $this->get_stockentry_no($exp, $prod)], ["productname","expirydate"], [$prod, $exp]);
+
+                        $closest_expiry_date = $this->find_closest_expiry_date($prod);
+                        $this->sum_product_stock($prod,$closest_expiry_date);
+                    }else{
+                        $stksold -= $qty;
+                        $stkrem += $qty;
+                        parent::insert_object("stock", ["productname","expirydate","stockbought","stocksold","stockremain", "entry_date", "entries"], [$prod, $exp, $stkbgt, $stksold, $stkrem,$this->find_closest_entry_date($prod, $exp), $this->get_stockentry_no($exp, $prod)]); 
+                       
+                        $closest_expiry_date = $this->find_closest_expiry_date($prod, $exp);
+
+                        echo $closest_expiry_date;
+
+                        $this->sum_product_stock($prod,$closest_expiry_date);
+                    }
+                    return ['success', 'inserted'];
+                }
+            }
+        } 
+    }
+
+    function delete_inventory($totalamt, $totalcost, $outbal, $inv, $id){
+        $prodsales = parent::select_object("sales", ['invoiceno'],[$inv]);
+        $users = parent::delete_object("sales", ["id"], [$id]);
+        $salesarr = $prodsales[3];
+        $totalamt -= $totalcost;
+
+        $outbal -=  $totalcost;
+
+        foreach($salesarr as $sale){
+            parent::update_object("sales", ['totalamt', 'outbal'], [$totalamt, $outbal], ['id'], [$sale['id']]);
+            $result = parent::update_object("customerinvoice", ['outbalance','totalamt'], [$outbal, $totalamt], ['invno'], [$sale['invoiceno']]);
+            //return $result;
+        } 
+ 
+        $inv = parent::select_object("customerinvoice", ['invno'],[$salesarr[0]['invoiceno']]);
+        $json = parent::select_object("customerinvoice", ['customer'],[$salesarr[0]['customer_name']]);
+        
+        foreach($json[3] as $sale){
+            
+            if((intval($sale['id']) > intval($inv[3][0]['id'])) && ($sale['invno'] != $inv[3][0]['invno'])){
+
+                parent::update_object("customerinvoice", ['outbalance'], [(intval($sale['outbalance']) - $totalcost)], ['invno'], [$sale['invno']]);
+                
+            }
+        }
+        $json = parent::select_object("customers", ['customer_name'],[$salesarr[0]['customer_name']]);
+
+        $result = parent::update_object("customers", ['outstanding_balance'], [(intval($json[3][0]['outstanding_balance']) - $totalcost)], ['customer_name'], [$salesarr[0]['customer_name']]);
         
     }
     
